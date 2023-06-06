@@ -1,4 +1,4 @@
-name: git-to-prod
+name: import-curated-collections-to-prod
 on:
   push:
     branches:
