@@ -5,8 +5,8 @@ on:
       - main
 env:
   MB_VERSION: 1.46.4
-  MB_DB_TYPE: ${{ secrets.MB_DB_TYPE }}
-  MB_DB_DBNAME: ${{ secrets.MB_DB_DBNAME }}
+  MB_DB_TYPE: postgres
+  MB_DB_DBNAME: metabase
   MB_DB_HOST: ${{ secrets.MB_DB_HOST }}
   MB_DB_USER: ${{ secrets.MB_DB_USER }}
   MB_DB_PASS: ${{ secrets.MB_DB_PASS }}
