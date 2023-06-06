@@ -1,5 +1,6 @@
 name: export-datamodel-from-prod
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 */6 * * *' # Every six hours every day
 env:
