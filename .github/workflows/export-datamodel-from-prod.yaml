@@ -1,0 +1,33 @@
+name: export-datamodel-from-prod
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Every six hours every day
+env:
+  MB_VERSION: 1.46.4
+  MB_DB_TYPE: postgres
+  MB_DB_DBNAME: metabase
+  MB_DB_HOST: ${{ secrets.MB_DB_HOST }}
+  MB_DB_USER: ${{ secrets.MB_DB_USER }}
+  MB_DB_PASS: ${{ secrets.MB_DB_PASS }}
+
+jobs:
+  export_data_model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download selected version enterprise jar
+        run: |
+          curl -OL https://downloads.metabase.com/enterprise/v$MB_VERSION/metabase.jar
+          stat ./metabase.jar
+      - name: Export datamodel
+        run: |
+          java -jar metabase.jar export $GITHUB_WORKSPACE --no-collections --no-settings
+      - name: Push Git commit
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          if [[ $(git diff --cached --stat) != '' ]]; then
+            git commit -m "Automatic export of the data model"
+            git push
+          fi
